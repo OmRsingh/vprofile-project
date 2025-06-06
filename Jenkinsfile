@@ -18,7 +18,9 @@ pipeline {
 
     stages {
         stage('Build') {
-            sh 'mvn -s settings.sh -DskipTests install'
+            steps {
+                sh 'mvn -s settings.sh -DskipTests install'
+            }
         }
     }
 }
