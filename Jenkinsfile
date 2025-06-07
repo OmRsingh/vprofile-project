@@ -9,10 +9,10 @@ pipeline {
        SNAP_REPO = 'vprofile-snapshot'
        NEXUS_USER = 'admin'
        NEXUS_PASS = '1219'
-       CENTRAL_REPO = 'vprofile-release'
+       NEXUS_REPOSITORY = 'vprofile-release'
        NEXUSIP = '172.31.94.159'
        NEXUSPORT = '8081'
-       NEXUS_GRP_REPO = 'vpro-maven-group'
+       NEXUS_REPOGRP_ID = 'vpro-maven-group'
        NEXUS_LOGIN = 'nexuslogin'
     }
 
