@@ -1,42 +1,42 @@
 pipeline {
     agent any
-    tools {
+/*    tools {
         jdk "JDK17"
         maven "MAVEN3.9"
-    }
+    } */
 
     environment {
-       SNAP_REPO = 'vprofile-snapshot'
+       NEXUS_PROTOCOL = "nexus3"
        NEXUS_USER = 'admin'
        NEXUS_PASS = '1219'
        NEXUS_REPOSITORY = 'vprofile-release'
        NEXUSIP = '172.31.94.159'
        NEXUSPORT = '8081'
        NEXUS_REPOGRP_ID = 'vpro-maven-group'
-       NEXUS_LOGIN = 'nexuslogin'
+       NEXUS_CREDENTIAL_ID = 'nexuslogin'
     }
 
     stages {
         stage('Build') {
             steps {
-                sh 'mvn -s settings.xml -DskipTests install'
+                sh 'mvn clean install -DskipTests install'
             }
             post {
                 success {
                     echo "Now Archiving."
-                    archiveArtifacts artifacts: '**/*.war'
+                    archiveArtifacts artifacts: '**/target/*.war'
                 }
             }
         }
-        stage('Test'){
+        stage('UNIT TEST'){
             steps{
-                sh 'mvn -s settings.xml test'
+                sh 'mvn test'
             }
         }
 
         stage('Checkstyle Analysis'){
             steps{
-                sh 'mvn -s settings.xml checkstyle:checkstyle'
+                sh 'mvn checkstyle:checkstyle'
             }
         }
     }
