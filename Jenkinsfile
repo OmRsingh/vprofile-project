@@ -15,8 +15,6 @@ pipeline {
        NEXUSPORT = '8081'
        NEXUS_REPOGRP_ID = 'vpro-maven-group'
        NEXUS_CREDENTIAL_ID = 'nexuslogin'
-       SONARSERVER = 'sonarserver'
-       SONARSCANNER = 'sonarscanner'
     }
 
     stages {
@@ -50,11 +48,11 @@ pipeline {
 
         stage ('Code Analysis with SonarQube') {
             environment {
-                scannerHome = tool "${SONARSCANNER}"
+                scannerHome = tool 'sonarscanner4'
             }
 
             steps {
-                withSonarQubeEnv("${SONARSERVER}"){
+                withSonarQubeEnv('sonar-pro'){
                     sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
                     -Dsonar.projectName=vprofile-repo \
                     -Dsonar.projectVersion=1.0 \
@@ -64,6 +62,10 @@ pipeline {
                     -Dsonar.jacoco.reportsPath=target/jacoco.exec \
                     -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
                 }
+/*
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }*/
             }
         }
     }
